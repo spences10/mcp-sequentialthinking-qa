@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.1
+
+### Patch Changes
+
+- 6241eb1: init
+
 ## 0.0.1 (2025-04-27)
 
 ### Features
