@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.2
+
+### Patch Changes
+
+- 1a59008: remove tavily reference, use branching
+
 ## 0.0.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
 	"name": "mcp-sequentialthinking-qa",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "A QA-focused adaptation of the MCP Sequential Thinking Server to guide tool usage in verification processes",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
