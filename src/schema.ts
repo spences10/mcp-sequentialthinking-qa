@@ -130,6 +130,14 @@ export const SEQUENTIAL_THINKING_TOOL = {
 					type: 'string' as const,
 				},
 			},
+			available_client_tools: {
+				type: 'array' as const,
+				description:
+					'Optional: List of tool names available to the calling LLM',
+				items: {
+					type: 'string' as const,
+				},
+			},
 		},
 		required: [
 			'thought',

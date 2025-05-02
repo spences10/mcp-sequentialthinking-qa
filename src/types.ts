@@ -13,6 +13,7 @@ export interface SequentialThinkingQAParams {
 	previous_steps?: StepRecommendation[];
 	remaining_steps?: string[];
 	verification_target?: string;
+	available_client_tools?: string[]; // Optional: List of tool names available to the calling LLM
 }
 
 // Define the schema for recommended tools

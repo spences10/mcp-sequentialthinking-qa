@@ -63,6 +63,48 @@ function handle_initial_code_analysis(
 function handle_best_practices_check(
 	params: SequentialThinkingQAParams,
 ): SequentialThinkingQAParams {
+	// Simple condition to trigger branching for demonstration
+	if (params.thought_number === 2 && !params.branch_from_thought) {
+		const branch_id = `alternative-syntax-${Date.now()}`; // Generate a unique branch ID
+		return {
+			...params,
+			thought:
+				'Multiple valid syntax patterns found (simulated). Branching to explore an alternative.',
+			branch_from_thought: params.thought_number,
+			branch_id: branch_id,
+			next_thought_needed: true,
+			// Update current_step to reflect the branching task
+			current_step: {
+				step_description: 'Explore an alternative syntax pattern.',
+				expected_outcome: 'Understanding of an alternative pattern.',
+				recommended_tools: [
+					// Recommend tools for exploring alternative patterns
+					{
+						tool_name: 'use_mcp_tool',
+						confidence: 0.9,
+						rationale:
+							'Search for details on the alternative pattern',
+						priority: 1,
+						alternatives: [
+							'mcp-omnisearch:brave_search',
+							'mcp-omnisearch:kagi_search',
+						],
+					},
+					{
+						tool_name: 'read_file',
+						confidence: 0.8,
+						rationale: 'Examine code examples',
+						priority: 2,
+					},
+				],
+				next_step_conditions: [
+					'Alternative pattern understood',
+					'Ready to compare or implement',
+				],
+			},
+		};
+	}
+
 	return {
 		...params,
 		current_step: {
@@ -71,18 +113,33 @@ function handle_best_practices_check(
 			expected_outcome: 'Understanding of correct syntax patterns',
 			recommended_tools: [
 				{
-					tool_name: 'tavily_search',
+					tool_name: 'use_mcp_tool',
 					confidence: 0.9,
 					rationale:
-						'Search for official documentation and best practices',
+						'Search for official documentation and best practices using an MCP search tool',
 					priority: 1,
+					alternatives: [
+						'mcp-omnisearch:brave_search',
+						'mcp-omnisearch:kagi_search',
+					],
+					suggested_inputs: {
+						server_name: 'mcp-omnisearch',
+						tool_name: 'brave_search',
+						arguments: { query: 'code syntax best practices' },
+					},
+				},
+				{
+					tool_name: 'browser_navigate',
+					confidence: 0.8,
+					rationale: 'Navigate to relevant documentation sites',
+					priority: 2,
 				},
 				{
 					tool_name: 'browser_action',
 					confidence: 0.7,
 					rationale:
 						'Browse documentation sites for detailed syntax information',
-					priority: 2,
+					priority: 3,
 				},
 			],
 			next_step_conditions: [

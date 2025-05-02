@@ -28,6 +28,48 @@ export function process_test_workflow(
 function handle_initial_test_step(
 	params: SequentialThinkingQAParams,
 ): SequentialThinkingQAParams {
+	// Simple condition to trigger branching for demonstration
+	if (params.thought_number === 1 && !params.branch_from_thought) {
+		const branch_id = `alternative-test-${Date.now()}`; // Generate a unique branch ID
+		return {
+			...params,
+			thought:
+				'Multiple testing approaches identified (simulated). Branching to explore an alternative.',
+			branch_from_thought: params.thought_number,
+			branch_id: branch_id,
+			next_thought_needed: true,
+			// Update current_step to reflect the branching task
+			current_step: {
+				step_description: 'Explore an alternative testing approach.',
+				expected_outcome: 'Understanding of an alternative method.',
+				recommended_tools: [
+					// Recommend tools for exploring alternative approaches
+					{
+						tool_name: 'use_mcp_tool',
+						confidence: 0.9,
+						rationale:
+							'Search for details on the alternative approach',
+						priority: 1,
+						alternatives: [
+							'mcp-omnisearch:brave_search',
+							'mcp-omnisearch:kagi_search',
+						],
+					},
+					{
+						tool_name: 'read_file',
+						confidence: 0.8,
+						rationale: 'Examine documentation or examples',
+						priority: 2,
+					},
+				],
+				next_step_conditions: [
+					'Alternative approach understood',
+					'Ready to compare or implement',
+				],
+			},
+		};
+	}
+
 	return {
 		...params,
 		current_step: {

@@ -64,6 +64,48 @@ function handle_initial_version_check(
 function handle_documentation_check(
 	params: SequentialThinkingQAParams,
 ): SequentialThinkingQAParams {
+	// Simple condition to trigger branching for demonstration
+	if (params.thought_number === 2 && !params.branch_from_thought) {
+		const branch_id = `alternative-docs-${Date.now()}`; // Generate a unique branch ID
+		return {
+			...params,
+			thought:
+				'Multiple documentation approaches found (simulated). Branching to explore an alternative.',
+			branch_from_thought: params.thought_number,
+			branch_id: branch_id,
+			next_thought_needed: true,
+			// Update current_step to reflect the branching task
+			current_step: {
+				step_description:
+					'Explore an alternative documentation approach.',
+				expected_outcome: 'Understanding of an alternative method.',
+				recommended_tools: [
+					// Recommend tools for exploring alternative docs
+					{
+						tool_name: 'browser_navigate',
+						confidence: 0.9,
+						rationale: 'Navigate to alternative documentation',
+						priority: 1,
+					},
+					{
+						tool_name: 'use_mcp_tool',
+						confidence: 0.8,
+						rationale: 'Search for alternative documentation',
+						priority: 2,
+						alternatives: [
+							'mcp-omnisearch:brave_search',
+							'mcp-omnisearch:kagi_search',
+						],
+					},
+				],
+				next_step_conditions: [
+					'Alternative approach understood',
+					'Ready to compare or implement',
+				],
+			},
+		};
+	}
+
 	return {
 		...params,
 		current_step: {
@@ -72,18 +114,33 @@ function handle_documentation_check(
 			expected_outcome: 'Understanding of correct patterns and APIs',
 			recommended_tools: [
 				{
-					tool_name: 'tavily_search',
+					tool_name: 'use_mcp_tool',
 					confidence: 0.9,
 					rationale:
-						'Search for official documentation for the identified version',
+						'Search for official documentation for the identified version using an MCP search tool',
 					priority: 1,
+					alternatives: [
+						'mcp-omnisearch:brave_search',
+						'mcp-omnisearch:kagi_search',
+					],
+					suggested_inputs: {
+						server_name: 'mcp-omnisearch',
+						tool_name: 'brave_search',
+						arguments: { query: 'package version documentation' },
+					},
+				},
+				{
+					tool_name: 'browser_navigate',
+					confidence: 0.8,
+					rationale: 'Navigate to official documentation sites',
+					priority: 2,
 				},
 				{
 					tool_name: 'browser_action',
 					confidence: 0.7,
 					rationale:
 						'Browse documentation site for detailed information',
-					priority: 2,
+					priority: 3,
 				},
 			],
 			next_step_conditions: [
@@ -138,6 +195,44 @@ function handle_implementation_planning(
 function handle_validation(
 	params: SequentialThinkingQAParams,
 ): SequentialThinkingQAParams {
+	// Simple condition to trigger revision for demonstration
+	if (params.thought_number === 4 && !params.is_revision) {
+		return {
+			...params,
+			thought:
+				'Validation failed (simulated). Revising implementation planning.',
+			is_revision: true,
+			revises_thought: 3, // Suggest revising the Implementation Planning step
+			next_thought_needed: true,
+			// Update current_step to reflect the revision task
+			current_step: {
+				step_description:
+					'Revise implementation based on simulated validation errors.',
+				expected_outcome: 'Implementation errors resolved.',
+				recommended_tools: [
+					// Recommend tools for debugging and fixing
+					{
+						tool_name: 'read_file',
+						confidence: 0.9,
+						rationale: 'Examine error logs or code',
+						priority: 1,
+					},
+					{
+						tool_name: 'replace_in_file',
+						confidence: 0.9,
+						rationale: 'Correct implementation errors',
+						priority: 1,
+					},
+				],
+				next_step_conditions: [
+					'Implementation errors corrected',
+					'Ready to re-validate',
+				],
+			},
+		};
+	}
+
+	// If validation succeeds (or not triggering revision), the workflow is complete
 	return {
 		...params,
 		current_step: {

@@ -63,6 +63,49 @@ function handle_initial_compatibility_assessment(
 function handle_breaking_changes_research(
 	params: SequentialThinkingQAParams,
 ): SequentialThinkingQAParams {
+	// Simple condition to trigger branching for demonstration
+	if (params.thought_number === 2 && !params.branch_from_thought) {
+		const branch_id = `alternative-compat-${Date.now()}`; // Generate a unique branch ID
+		return {
+			...params,
+			thought:
+				'Multiple compatibility solutions found (simulated). Branching to explore an alternative.',
+			branch_from_thought: params.thought_number,
+			branch_id: branch_id,
+			next_thought_needed: true,
+			// Update current_step to reflect the branching task
+			current_step: {
+				step_description:
+					'Explore an alternative compatibility solution.',
+				expected_outcome: 'Understanding of an alternative method.',
+				recommended_tools: [
+					// Recommend tools for exploring alternative solutions
+					{
+						tool_name: 'use_mcp_tool',
+						confidence: 0.9,
+						rationale:
+							'Search for details on the alternative solution',
+						priority: 1,
+						alternatives: [
+							'mcp-omnisearch:brave_search',
+							'mcp-omnisearch:kagi_search',
+						],
+					},
+					{
+						tool_name: 'read_file',
+						confidence: 0.8,
+						rationale: 'Examine example implementations',
+						priority: 2,
+					},
+				],
+				next_step_conditions: [
+					'Alternative solution understood',
+					'Ready to compare or implement',
+				],
+			},
+		};
+	}
+
 	return {
 		...params,
 		current_step: {
@@ -72,18 +115,33 @@ function handle_breaking_changes_research(
 				'Comprehensive list of potential compatibility issues',
 			recommended_tools: [
 				{
-					tool_name: 'tavily_search',
+					tool_name: 'use_mcp_tool',
 					confidence: 0.9,
 					rationale:
-						'Search for breaking changes documentation and migration guides',
+						'Search for breaking changes documentation and migration guides using an MCP search tool',
 					priority: 1,
+					alternatives: [
+						'mcp-omnisearch:brave_search',
+						'mcp-omnisearch:kagi_search',
+					],
+					suggested_inputs: {
+						server_name: 'mcp-omnisearch',
+						tool_name: 'brave_search',
+						arguments: { query: 'breaking changes compatibility' },
+					},
+				},
+				{
+					tool_name: 'browser_navigate',
+					confidence: 0.8,
+					rationale: 'Navigate to relevant documentation sites',
+					priority: 2,
 				},
 				{
 					tool_name: 'browser_action',
 					confidence: 0.7,
 					rationale:
 						'Browse release notes and documentation for compatibility information',
-					priority: 2,
+					priority: 3,
 				},
 			],
 			next_step_conditions: [

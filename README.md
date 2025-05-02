@@ -35,6 +35,8 @@ The server includes specialized workflows for common QA tasks:
 2. **Syntax Validation**: Verifies code syntax against best practices
 3. **Compatibility Check**: Ensures compatibility between different
    versions or components
+4. **Test Workflow**: A workflow primarily used for testing the
+   sequential thinking QA system itself.
 
 ## How It Works
 
@@ -51,6 +53,11 @@ recommendation includes:
 The server works with any MCP tools available in your environment. It
 provides recommendations based on the current step's requirements, but
 the actual tool execution is handled by the consumer (like Claude).
+
+The server also supports creating branches to explore different
+approaches or revising previous thoughts to correct errors or
+incorporate new information, allowing for a flexible and adaptive QA
+process.
 
 ## Example Usage
 

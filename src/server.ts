@@ -103,11 +103,20 @@ function process_generic_qa_workflow(
 					priority: 1,
 				},
 				{
-					tool_name: 'tavily_search',
+					tool_name: 'use_mcp_tool',
 					confidence: 0.6,
 					rationale:
-						'Search for relevant documentation or best practices',
+						'Search for relevant documentation or best practices using an MCP search tool',
 					priority: 2,
+					alternatives: [
+						'mcp-omnisearch:brave_search',
+						'mcp-omnisearch:kagi_search',
+					],
+					suggested_inputs: {
+						server_name: 'mcp-omnisearch',
+						tool_name: 'brave_search',
+						arguments: { query: 'documentation best practices' },
+					},
 				},
 			],
 			next_step_conditions: [
