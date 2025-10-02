@@ -1,9 +1,11 @@
 // Define the interface for the QA parameters
 export interface SequentialThinkingQAParams {
+	available_mcp_tools: string[];
 	thought: string;
 	thought_number: number;
 	total_thoughts: number;
 	next_thought_needed: boolean;
+	verification_target?: string;
 	is_revision?: boolean;
 	revises_thought?: number;
 	branch_from_thought?: number;
@@ -12,8 +14,6 @@ export interface SequentialThinkingQAParams {
 	current_step?: StepRecommendation;
 	previous_steps?: StepRecommendation[];
 	remaining_steps?: string[];
-	verification_target?: string;
-	available_client_tools?: string[]; // Optional: List of tool names available to the calling LLM
 }
 
 // Define the schema for recommended tools
@@ -31,15 +31,17 @@ export interface StepRecommendation {
 	step_description: string;
 	expected_outcome: string;
 	recommended_tools: RecommendedTool[];
-	next_step_conditions: string[];
+	next_step_conditions?: string[];
 }
 
 // Define the main interface for thought data
 export interface ThoughtData {
+	available_mcp_tools: string[];
 	thought: string;
 	thought_number: number;
 	total_thoughts: number;
 	next_thought_needed: boolean;
+	verification_target?: string;
 	is_revision?: boolean;
 	revises_thought?: number;
 	branch_from_thought?: number;
@@ -48,5 +50,14 @@ export interface ThoughtData {
 	current_step?: StepRecommendation;
 	previous_steps?: StepRecommendation[];
 	remaining_steps?: string[];
-	verification_target?: string;
 }
+
+// Define the Tool interface
+export interface Tool {
+	name: string;
+	description: string;
+	inputSchema: Record<string, unknown>;
+}
+
+// Define the ToolRecommendation interface (same as RecommendedTool but with clearer name)
+export interface ToolRecommendation extends RecommendedTool {}

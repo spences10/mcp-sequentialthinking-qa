@@ -4,8 +4,8 @@ An adaptation of the
 [MCP Sequential Thinking Server](https://github.com/modelcontextprotocol/servers/blob/main/src/sequentialthinking/index.ts)
 designed to guide tool usage in QA and verification processes. This
 server helps break down verification tasks into manageable steps and
-provides recommendations for which MCP tools would be most effective
-at each stage.
+provides LLM-driven recommendations for which MCP tools would be most
+effective at each stage.
 
 A Model Context Protocol (MCP) server that combines sequential
 thinking with intelligent tool suggestions for QA tasks. For each step
@@ -15,104 +15,89 @@ each tool would be appropriate.
 
 ## Features
 
-- 🤔 Sequential thinking process for QA verification tasks
-- 🔄 Prescriptive workflows that guide you through QA steps
-- 🌳 Support for branching and revision (demonstration)
-- 🛠️ Pre-defined tool recommendations for each workflow step
+- 🤔 Dynamic and reflective QA problem-solving through sequential
+  thoughts
+- 🔄 Flexible verification process that adapts and evolves
+- 🌳 Support for branching and revision of thoughts
+- 🛠️ LLM-driven intelligent tool recommendations for QA tasks
 - 📊 Confidence scoring for tool suggestions
 - 🔍 Detailed rationale for tool recommendations
 - 📝 Step tracking with expected outcomes
 - 🔄 Progress monitoring with previous and remaining steps
 - 🎯 Alternative tool suggestions for each step
-- 🗂️ Keyword-based workflow routing
-
-## Specialized QA Workflows
-
-The server includes specialized workflows for common QA tasks.
-Workflows are automatically selected based on keywords in your
-`thought` or `verification_target`:
-
-1. **Version Verification**: Validates package versions and
-   compatibility
-   - **Triggered by**: "version", "package"
-
-2. **Syntax Validation**: Verifies code syntax against best practices
-   - **Triggered by**: "syntax", "validation", "code style", "code"
-
-3. **Compatibility Check**: Ensures compatibility between different
-   versions or components
-   - **Triggered by**: "compatibility", "breaking changes"
-
-4. **Test Workflow**: A workflow primarily used for testing the
-   sequential thinking QA system itself
-   - **Triggered by**: "test", "testing"
-
-If no keywords match, a generic QA workflow is used with
-general-purpose recommendations.
+- 🧠 Memory management with configurable history limits
+- 🗑️ Manual history cleanup capabilities
 
 ## How It Works
 
-This server provides **prescriptive QA workflows** with pre-defined
-tool recommendations for each step. Unlike dynamic analysis tools,
-this server offers **curated, opinionated guidance** based on common
-QA patterns.
+This server facilitates sequential thinking with MCP tool coordination
+for QA and verification tasks. The LLM analyzes available tools and
+their descriptions to make intelligent recommendations for
+verification processes, which are then tracked and organized by this
+server.
 
-### Prescriptive Approach
+The workflow:
 
-The server uses **keyword-based routing** to match your verification
-task to one of four specialized workflows. Each workflow contains
-**pre-defined steps** (typically 4 steps) with carefully curated tool
-recommendations.
+1. LLM provides available MCP tools to the sequential thinking QA
+   server
+2. LLM analyzes each verification step and recommends appropriate
+   tools
+3. Server tracks recommendations, maintains context, and manages
+   memory
+4. LLM executes recommended tools and continues the verification
+   process
 
 Each recommendation includes:
 
 - A confidence score (0-1) indicating how well the tool matches the
-  current need
-- A clear rationale explaining why the tool would be helpful
+  verification need
+- A clear rationale explaining why the tool would be helpful for this
+  QA step
 - A priority level to suggest tool execution order
+- Suggested input parameters for the tool
 - Alternative tools that could also be used
-- Suggested inputs for the tool (when applicable)
 
-The server works with any MCP tools available in your environment. It
-provides recommendations based on the workflow step, but the actual
-tool execution is handled by the consumer (like Claude).
-
-### Demonstration Features
-
-The server includes **simulated branching and revision** logic in some
-workflows to demonstrate how sequential thinking can explore
-alternatives or backtrack. These are triggered at specific steps for
-demonstration purposes rather than based on actual validation results.
+The server works with any MCP tools available in your environment and
+automatically manages memory to prevent unbounded growth.
 
 ## Example Usage
 
-Here's an example of how the server guides tool usage for version
-verification. This output is from the **Version Verification workflow,
-Step 1** (triggered by the keyword "version" in the thought). The tool
-recommendations shown are **pre-defined** for this step:
+Here's an example of how the server guides tool usage for QA
+verification:
 
 ```json
 {
-	"thought": "Need to verify Tailwind CSS version before implementing configuration",
+	"available_mcp_tools": [
+		"mcp-filesystem",
+		"mcp-playwright",
+		"mcp-omnisearch"
+	],
+	"thought": "Need to verify package version compatibility before implementing configuration",
+	"verification_target": "package version compatibility",
 	"current_step": {
-		"step_description": "Check installed Tailwind version in package.json",
-		"expected_outcome": "Confirmed Tailwind version",
+		"step_description": "Check installed package version in package.json",
+		"expected_outcome": "Confirmed package version and dependencies",
 		"recommended_tools": [
 			{
 				"tool_name": "read_file",
-				"confidence": 0.9,
-				"rationale": "Examine package.json to determine installed version",
-				"priority": 1
+				"confidence": 0.95,
+				"rationale": "Examine package.json to determine installed version and dependencies",
+				"priority": 1,
+				"suggested_inputs": {
+					"path": "package.json"
+				}
 			},
 			{
 				"tool_name": "execute_command",
-				"confidence": 0.7,
-				"rationale": "Run npm list to check installed version",
-				"priority": 2
+				"confidence": 0.75,
+				"rationale": "Run npm list to verify actually installed versions",
+				"priority": 2,
+				"alternatives": ["pnpm list", "yarn list"]
 			}
 		],
 		"next_step_conditions": [
 			"Version identified",
+			"Dependencies verified",
 			"Check for breaking changes between versions"
 		]
 	},
@@ -124,38 +109,11 @@ recommendations shown are **pre-defined** for this step:
 
 The server tracks your progress and supports:
 
-- Creating branches to explore different approaches
+- Creating branches to explore different verification approaches
 - Revising previous thoughts with new information
-- Maintaining context across multiple steps
+- Maintaining context across multiple verification steps
 - Suggesting next steps based on current findings
-
-## When to Use This Server
-
-### ✅ **Best For:**
-
-- **Structured QA processes** that fit one of the predefined workflows
-- **Learning** which tools are commonly used for QA tasks
-- **Consistency** - get the same step-by-step recommendations each
-  time
-- **Teams** wanting standardized QA approaches
-- **Quick guidance** without needing to explain available tools to the
-  LLM
-
-### ⚠️ **Not Ideal For:**
-
-- **Open-ended problem-solving** requiring dynamic tool analysis
-- **Custom workflows** that don't match the 4 predefined patterns
-- **Scenarios** where tool recommendations need to be based on actual
-  runtime conditions
-
-### 🔄 **Alternative: mcp-sequentialthinking-tools**
-
-For dynamic, LLM-driven tool recommendations based on available MCP
-tools in your environment, consider
-[mcp-sequentialthinking-tools](https://github.com/spences10/mcp-sequentialthinking-tools).
-That server analyzes available tools at runtime and makes
-context-aware recommendations, while this server provides curated,
-prescriptive guidance for common QA patterns.
+- Adapting to the specific tools available in your environment
 
 ## Configuration
 
@@ -171,7 +129,10 @@ Add this to your Cline MCP settings:
 	"mcpServers": {
 		"mcp-sequentialthinking-qa": {
 			"command": "npx",
-			"args": ["-y", "mcp-sequentialthinking-qa"]
+			"args": ["-y", "mcp-sequentialthinking-qa"],
+			"env": {
+				"MAX_HISTORY_SIZE": "1000"
+			}
 		}
 	}
 }
@@ -189,7 +150,7 @@ For WSL environments, add this to your Claude Desktop configuration:
 			"args": [
 				"bash",
 				"-c",
-				"source ~/.nvm/nvm.sh && /home/username/.nvm/versions/node/v20.12.1/bin/npx mcp-sequentialthinking-qa"
+				"MAX_HISTORY_SIZE=1000 source ~/.nvm/nvm.sh && /home/username/.nvm/versions/node/v20.12.1/bin/npx mcp-sequentialthinking-qa"
 			]
 		}
 	}
@@ -202,11 +163,14 @@ The server implements a single MCP tool with configurable parameters:
 
 ### sequentialthinking_qa
 
-A tool for QA-focused sequential thinking with tool recommendations
-for verification tasks.
+A tool for QA-focused sequential thinking with intelligent tool
+recommendations for verification tasks.
 
 Parameters:
 
+- `available_mcp_tools` (array, required): Array of MCP tool names
+  available for use (e.g., ["mcp-omnisearch", "mcp-playwright",
+  "mcp-filesystem"])
 - `thought` (string, required): Your current thinking step in the QA
   process
 - `next_thought_needed` (boolean, required): Whether another thought
@@ -215,7 +179,16 @@ Parameters:
 - `total_thoughts` (integer, required): Estimated total thoughts
   needed
 - `verification_target` (string, optional): What's being verified
-  (code, config, etc.)
+  (code, config, package version, etc.)
+- `is_revision` (boolean, optional): Whether this revises previous
+  thinking
+- `revises_thought` (integer, optional): Which thought is being
+  reconsidered
+- `branch_from_thought` (integer, optional): Branching point thought
+  number
+- `branch_id` (string, optional): Branch identifier
+- `needs_more_thoughts` (boolean, optional): If more thoughts are
+  needed
 - `current_step` (object, optional): Current step recommendation with:
   - `step_description`: What needs to be done
   - `recommended_tools`: Array of tool recommendations with confidence
@@ -226,55 +199,42 @@ Parameters:
 - `remaining_steps` (array, optional): High-level descriptions of
   upcoming steps
 
-## How Workflows Work
+## Memory Management
 
-### Workflow Structure
+The server includes built-in memory management to prevent unbounded
+growth:
 
-Each specialized workflow consists of **4 predefined steps** with
-specific tool recommendations:
+- **History Limit**: Configurable maximum number of thoughts to retain
+  (default: 1000)
+- **Automatic Trimming**: History automatically trims when limit is
+  exceeded
+- **Manual Cleanup**: Server provides methods to clear history when
+  needed
 
-1. **Step 1**: Initial analysis or assessment
-2. **Step 2**: Research or documentation review (may trigger
-   branching)
-3. **Step 3**: Implementation or correction
-4. **Step 4**: Validation or testing (may trigger revision)
+### Configuring History Size
 
-### Routing Mechanism
+You can configure the history size by setting the `MAX_HISTORY_SIZE`
+environment variable:
 
-Workflows are selected using **keyword matching** on the `thought` or
-`verification_target` parameters:
-
-```typescript
-// Example routing logic
-if (thought.includes('version') || thought.includes('package')) {
-	// → Version Verification workflow
-} else if (
-	thought.includes('syntax') ||
-	thought.includes('validation')
-) {
-	// → Syntax Validation workflow
+```json
+{
+	"mcpServers": {
+		"mcp-sequentialthinking-qa": {
+			"command": "npx",
+			"args": ["-y", "mcp-sequentialthinking-qa"],
+			"env": {
+				"MAX_HISTORY_SIZE": "500"
+			}
+		}
+	}
 }
-// ... etc
 ```
 
-### Branching & Revision (Demonstration)
+Or for local development:
 
-Some workflows include **simulated** branching and revision logic to
-demonstrate the sequential thinking pattern:
-
-- **Branching**: Triggered at Step 2 in most workflows (e.g., "explore
-  alternative documentation approach")
-- **Revision**: Triggered at Step 4 in Version Verification (e.g.,
-  "validation failed, revise implementation")
-
-These are hardcoded demonstrations rather than dynamic decisions based
-on actual validation results.
-
-### Fallback Behavior
-
-If no keywords match, the server uses a **generic QA workflow** with
-general-purpose tool recommendations like `read_file`, `search_files`,
-and `execute_command`.
+```bash
+MAX_HISTORY_SIZE=2000 npx mcp-sequentialthinking-qa
+```
 
 ## Development
 
@@ -335,3 +295,5 @@ MIT License - see the [LICENSE](LICENSE) file for details.
   [Model Context Protocol](https://github.com/modelcontextprotocol)
 - Adapted from the
   [MCP Sequential Thinking Server](https://github.com/modelcontextprotocol/servers/blob/main/src/sequentialthinking/index.ts)
+- Inspired by
+  [mcp-sequentialthinking-tools](https://github.com/spences10/mcp-sequentialthinking-tools)
