@@ -15,8 +15,8 @@ importers:
         specifier: ^0.4.0
         version: 0.4.0(tmcp@1.16.0(typescript@5.9.3))
       chalk:
-        specifier: ^5.6.2
-        version: 5.6.2
+        specifier: ^6.0.0
+        version: 6.0.0
       tmcp:
         specifier: ^1.16.0
         version: 1.16.0(typescript@5.9.3)
@@ -173,9 +173,9 @@ packages:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
 
-  chalk@5.6.2:
-    resolution: {integrity: sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==}
-    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
+  chalk@6.0.0:
+    resolution: {integrity: sha512-2uNTXIuTTxk7ciZgAU1BQcgnchcG0xXnrs6jzkQfj9SsRa9M2s5zE8WT96hS6KmG4MzWHSrvH43DF1m4XRkrFg==}
+    engines: {node: '>=22'}
 
   chardet@2.1.0:
     resolution: {integrity: sha512-bNFETTG/pM5ryzQ9Ad0lJOTa6HWD/YsScAR3EnCPZRPlQh77JocYktSHOUHelyhm8IARL+o4c4F1bP5KVOjiRA==}
@@ -695,7 +695,7 @@ snapshots:
     dependencies:
       fill-range: 7.1.1
 
-  chalk@5.6.2: {}
+  chalk@6.0.0: {}
 
   chardet@2.1.0: {}
 
