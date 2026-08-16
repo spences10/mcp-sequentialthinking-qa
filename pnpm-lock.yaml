@@ -12,8 +12,8 @@ importers:
         specifier: ^0.1.4
         version: 0.1.4(tmcp@1.16.0(typescript@5.9.3))(valibot@1.1.0(typescript@5.9.3))
       '@tmcp/transport-stdio':
-        specifier: ^0.4.0
-        version: 0.4.0(tmcp@1.16.0(typescript@5.9.3))
+        specifier: ^0.5.0
+        version: 0.5.0(tmcp@1.16.0(typescript@5.9.3))
       chalk:
         specifier: ^5.6.2
         version: 5.6.2
@@ -134,10 +134,15 @@ packages:
       tmcp: ^1.10.2
       valibot: ^1.1.0
 
-  '@tmcp/transport-stdio@0.4.0':
-    resolution: {integrity: sha512-GPfYj8Yn7OqLv7yDzOzonZ2E9SyPphgmmiByBfhNYKBb5Mzp5aSVUJ3cjuiOOz4ZvpM9FzwMmxOt8wNURZxjmQ==}
+  '@tmcp/session-manager@0.3.0':
+    resolution: {integrity: sha512-L16r8qlzXUoS0ec7kuap1P1nQorCcZHHUFe7UGijwwrfBRXB0hFnfC+/BM1PVdGlM7Ade8YxomecybQN5imYXA==}
     peerDependencies:
-      tmcp: ^1.16.0
+      tmcp: ^1.20.0-next.0 || ^1.20.0
+
+  '@tmcp/transport-stdio@0.5.0':
+    resolution: {integrity: sha512-1NZsGDveDraa/KWsOOn8VybPn5PbYJi5hRWuIRUKIX7joa3Lx7tSf+0EeXwzG1OyPlsEeTNagBWpBpvpfh5lpw==}
+    peerDependencies:
+      tmcp: ^1.20.0-next.0 || ^1.20.0
 
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
@@ -663,8 +668,14 @@ snapshots:
       tmcp: 1.16.0(typescript@5.9.3)
       valibot: 1.1.0(typescript@5.9.3)
 
-  '@tmcp/transport-stdio@0.4.0(tmcp@1.16.0(typescript@5.9.3))':
+  '@tmcp/session-manager@0.3.0(tmcp@1.16.0(typescript@5.9.3))':
     dependencies:
+      json-rpc-2.0: 1.7.1
+      tmcp: 1.16.0(typescript@5.9.3)
+
+  '@tmcp/transport-stdio@0.5.0(tmcp@1.16.0(typescript@5.9.3))':
+    dependencies:
+      '@tmcp/session-manager': 0.3.0(tmcp@1.16.0(typescript@5.9.3))
       tmcp: 1.16.0(typescript@5.9.3)
 
   '@types/node@12.20.55': {}
