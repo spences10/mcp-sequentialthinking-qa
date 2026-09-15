@@ -41,7 +41,7 @@
 		"valibot": "^1.1.0"
 	},
 	"devDependencies": {
-		"@changesets/cli": "^2.29.7",
+		"@changesets/cli": "^3.0.0",
 		"@types/node": "^24.6.2",
 		"prettier": "^3.6.2",
 		"typescript": "^5.9.3"
